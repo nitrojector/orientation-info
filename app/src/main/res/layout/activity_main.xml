@@ -1,0 +1,473 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".`MainActivity.bkp`">
+
+    <TextView
+        android:id="@+id/gyroLogCol0"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:lines="@integer/maxLinesRec"
+        android:maxLines="10"
+        android:textSize="8sp"
+        app:layout_constraintStart_toStartOf="@+id/textView20"
+        app:layout_constraintTop_toBottomOf="@+id/textView20" />
+
+    <TextView
+        android:id="@+id/gyroLogCol2"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:lines="@integer/maxLinesRec"
+        android:maxLines="10"
+        android:textSize="8sp"
+        app:layout_constraintStart_toEndOf="@+id/gyroLogCol1"
+        app:layout_constraintTop_toTopOf="@+id/gyroLogCol1" />
+
+    <TextView
+        android:id="@+id/gyroLogCol1"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:lines="@integer/maxLinesRec"
+        android:maxLines="10"
+        android:textSize="8sp"
+        app:layout_constraintStart_toEndOf="@+id/gyroLogCol0"
+        app:layout_constraintTop_toTopOf="@+id/gyroLogCol0" />
+
+    <TextView
+        android:id="@+id/textView20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="@string/gyroLog"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        app:layout_constraintStart_toEndOf="@+id/magLogCol2"
+        app:layout_constraintTop_toTopOf="@+id/textView9" />
+
+    <Button
+        android:id="@+id/resetButton"
+        style="@android:style/Widget.DeviceDefault.Light.Button.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/resetButton"
+        android:textColor="@android:color/holo_red_light"
+        app:iconTint="#00BCD4"
+        app:layout_constraintEnd_toEndOf="@+id/recordButton"
+        app:layout_constraintTop_toBottomOf="@+id/recordButton" />
+
+    <TextView
+        android:id="@+id/gyroTxtY"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@+id/gyroTxtX"
+        app:layout_constraintTop_toBottomOf="@+id/gyroTxtX" />
+
+    <TextView
+        android:id="@+id/gyroTxtZ"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@+id/gyroTxtY"
+        app:layout_constraintTop_toBottomOf="@+id/gyroTxtY" />
+
+    <TextView
+        android:id="@+id/gyroTxtX"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@+id/textView15"
+        app:layout_constraintTop_toBottomOf="@+id/textView15" />
+
+    <TextView
+        android:id="@+id/calMagTxtX"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@+id/textView12"
+        app:layout_constraintTop_toBottomOf="@+id/textView12" />
+
+    <TextView
+        android:id="@+id/textView19"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="15dp"
+        android:text="@string/gyro"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
+    <ImageView
+        android:id="@+id/gyroByX"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_marginTop="20dp"
+        android:contentDescription="@string/calmag"
+        android:src="@drawable/direction"
+        app:layout_constraintStart_toStartOf="@+id/textView19"
+        app:layout_constraintTop_toBottomOf="@+id/textView19" />
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/mark"
+        android:textAlignment="viewStart"
+        android:textColor="#FF0000"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/gyroByZ"
+        app:layout_constraintEnd_toEndOf="@+id/gyroByZ"
+        app:layout_constraintStart_toStartOf="@+id/gyroByZ" />
+
+    <ImageView
+        android:id="@+id/gyroByY"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_marginStart="5dp"
+        android:contentDescription="@string/calmag"
+        android:src="@drawable/direction"
+        app:layout_constraintStart_toEndOf="@+id/gyroByX"
+        app:layout_constraintTop_toTopOf="@+id/gyroByX" />
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/mark"
+        android:textAlignment="viewStart"
+        android:textColor="#FF0000"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/gyroByY"
+        app:layout_constraintEnd_toEndOf="@+id/gyroByY"
+        app:layout_constraintStart_toStartOf="@+id/gyroByY" />
+
+    <ImageView
+        android:id="@+id/gyroByZ"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_marginStart="5dp"
+        android:contentDescription="@string/calmag"
+        android:src="@drawable/direction"
+        app:layout_constraintStart_toEndOf="@+id/gyroByY"
+        app:layout_constraintTop_toTopOf="@+id/gyroByY" />
+
+    <TextView
+        android:id="@+id/textView14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="5dp"
+        android:text="@string/gyroRotX"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/gyroByX"
+        app:layout_constraintStart_toStartOf="@+id/gyroByX"
+        app:layout_constraintTop_toBottomOf="@+id/gyroByX" />
+
+    <TextView
+        android:id="@+id/textView15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="@string/valueLabel"
+        android:textStyle="italic"
+        app:layout_constraintStart_toEndOf="@+id/gyroByZ"
+        app:layout_constraintTop_toBottomOf="@+id/textView10" />
+
+    <TextView
+        android:id="@+id/textView16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="5dp"
+        android:text="@string/gyroRotZ"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/gyroByZ"
+        app:layout_constraintStart_toStartOf="@+id/gyroByZ"
+        app:layout_constraintTop_toBottomOf="@+id/gyroByZ" />
+
+    <TextView
+        android:id="@+id/textView17"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/mark"
+        android:textAlignment="viewStart"
+        android:textColor="#FF0000"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/gyroByX"
+        app:layout_constraintEnd_toEndOf="@+id/gyroByX"
+        app:layout_constraintStart_toStartOf="@+id/gyroByX" />
+
+    <TextView
+        android:id="@+id/textView18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="5dp"
+        android:text="@string/gyroRotY"
+        android:textAllCaps="false"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/gyroByY"
+        app:layout_constraintStart_toStartOf="@+id/gyroByY"
+        app:layout_constraintTop_toBottomOf="@+id/gyroByY" />
+
+    <TextView
+        android:id="@+id/magLogCol2"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:lines="@integer/maxLinesRec"
+        android:maxLines="10"
+        android:textSize="8sp"
+        app:layout_constraintStart_toEndOf="@+id/magLogCol1"
+        app:layout_constraintTop_toTopOf="@+id/magLogCol1" />
+
+    <TextView
+        android:id="@+id/magLogCol0"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:lines="@integer/maxLinesRec"
+        android:maxLines="@integer/maxLinesRec"
+        android:textSize="8sp"
+        app:layout_constraintStart_toStartOf="@+id/textView9"
+        app:layout_constraintTop_toBottomOf="@+id/textView9" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/mark"
+        android:textAlignment="viewStart"
+        android:textColor="#FF0000"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/calMagByZX"
+        app:layout_constraintEnd_toEndOf="@+id/calMagByZX"
+        app:layout_constraintStart_toStartOf="@+id/calMagByZX" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/mark"
+        android:textAlignment="viewStart"
+        android:textColor="#FF0000"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/calMagByXY"
+        app:layout_constraintEnd_toEndOf="@+id/calMagByXY"
+        app:layout_constraintStart_toStartOf="@+id/calMagByXY" />
+
+    <ImageView
+        android:id="@+id/calMagByXY"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="20dp"
+        android:contentDescription="@string/calmag"
+        android:src="@drawable/direction"
+        app:layout_constraintStart_toEndOf="@+id/calMagByZX"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <ImageView
+        android:id="@+id/calMagByZX"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="20dp"
+        android:contentDescription="@string/calmag"
+        android:src="@drawable/direction"
+        app:layout_constraintStart_toEndOf="@+id/calMagByYZ"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="123dp"
+        android:layout_height="24dp"
+        android:scaleX="1"
+        android:scaleY="1"
+        android:text="@string/axes"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textStyle="italic"
+        app:layout_constraintBottom_toBottomOf="@+id/updateSwitch"
+        app:layout_constraintEnd_toStartOf="@+id/updateSwitch"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="@+id/updateSwitch" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="92dp"
+        android:layout_height="85dp"
+
+        android:layout_marginTop="10dp"
+        android:contentDescription="@string/axes"
+        android:src="@drawable/axes"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/axes"
+        tools:srcCompat="@drawable/axes" />
+
+    <ImageView
+        android:id="@+id/calMagByYZ"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_marginTop="20dp"
+        android:contentDescription="@string/calmag"
+        android:src="@drawable/direction"
+        app:layout_constraintStart_toStartOf="@+id/textView2"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/calmag"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/mark"
+        android:textAlignment="viewStart"
+        android:textColor="#FF0000"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/calMagByYZ"
+        app:layout_constraintEnd_toEndOf="@+id/calMagByYZ"
+        app:layout_constraintStart_toStartOf="@+id/calMagByYZ" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="5dp"
+        android:text="@string/yzrelation"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/calMagByYZ"
+        app:layout_constraintStart_toStartOf="@+id/calMagByYZ"
+        app:layout_constraintTop_toBottomOf="@+id/calMagByYZ" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="5dp"
+        android:text="@string/xzrelation"
+        android:textAllCaps="false"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/calMagByZX"
+        app:layout_constraintStart_toStartOf="@+id/calMagByZX"
+        app:layout_constraintTop_toBottomOf="@+id/calMagByZX" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="5dp"
+        android:text="@string/xyrelation"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/calMagByXY"
+        app:layout_constraintStart_toStartOf="@+id/calMagByXY"
+        app:layout_constraintTop_toBottomOf="@+id/calMagByXY" />
+
+    <TextView
+        android:id="@+id/calMagTxtY"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@+id/textView12"
+        app:layout_constraintTop_toBottomOf="@+id/calMagTxtX" />
+
+    <TextView
+        android:id="@+id/calMagTxtZ"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@+id/textView12"
+        app:layout_constraintTop_toBottomOf="@+id/calMagTxtY" />
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="@string/valueLabel"
+        android:textStyle="italic"
+        app:layout_constraintStart_toEndOf="@+id/calMagByXY"
+        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+    <Switch
+        android:id="@+id/updateSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="27dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:text="@string/updateButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/recordButton"
+        style="@android:style/Widget.DeviceDefault.Button.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/recordButton"
+        android:textColor="#FFC107"
+        app:iconTint="#00BCD4"
+        app:layout_constraintEnd_toEndOf="@+id/updateSwitch"
+        app:layout_constraintTop_toBottomOf="@+id/updateSwitch" />
+
+    <TextView
+        android:id="@+id/magLogCol1"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:lines="@integer/maxLinesRec"
+        android:maxLines="10"
+        android:textSize="8sp"
+        app:layout_constraintStart_toEndOf="@+id/magLogCol0"
+        app:layout_constraintTop_toTopOf="@+id/magLogCol0" />
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="15dp"
+        android:text="@string/magLog"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView14" />
+
+    <Button
+        android:id="@+id/clearLogs"
+        style="@style/Widget.MaterialComponents.Button.TextButton.Dialog.Flush"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/clearLogs"
+        android:textColor="#2196F3"
+        app:layout_constraintEnd_toStartOf="@+id/updateSwitch"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/updateSwitch" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

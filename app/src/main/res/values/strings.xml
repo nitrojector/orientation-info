@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">OrientationInfo</string>
+    <string name="gyro">Gyroscope</string>
+    <string name="grav">Gravity</string>
+    <string name="rawmag">Uncalibrated Magnetometer</string>
+    <string name="calmag">Calibrated Magnetometer</string>
+    <string name="axes">Default Orient.</string>
+    <string name="mark">- | +</string>
+    <string name="xyrelation">Vector XY\n(Z)</string>
+    <string name="yzrelation">Vector YZ\n(X)</string>
+    <string name="xzrelation">Vector ZX\n(Y)</string>
+    <string name="gyroRotX">Rot X\nRoll</string>
+    <string name="gyroRotY">Rot Y\nPitch</string>
+    <string name="gyroRotZ">Rot Z\nYaw</string>
+    <string name="valueLabel">Values</string>
+    <string name="calMagNotice">Calibrate magnetometer by moving in 8 shape</string>
+    <string name="updateButton">Update Sensors</string>
+    <string name="resetButton">Reset Gyro</string>
+    <string name="recordButton">Record</string>
+    <string name="clearLogs">Clear Logs</string>
+    <string name="magLog">Magnetometer Log</string>
+    <string name="gyroLog">Gyroscope Log</string>
+
+    <!-- Constants -->
+    <integer name="maxLinesRec">20</integer>
+</resources>

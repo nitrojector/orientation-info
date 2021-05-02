@@ -1,0 +1,267 @@
+package io.jector.orientationinfo
+
+import android.annotation.*
+import android.app.Activity
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
+import android.os.Bundle
+import android.util.Log
+import android.view.View
+import android.widget.*
+import io.jector.orientationinfo.R.id
+import java.math.BigDecimal
+import java.util.*
+
+class `MainActivity.bkp` : Activity(), SensorEventListener, View.OnClickListener {
+    // Raw value display
+    private var calMagRawTxtX: TextView? = null
+    private var calMagRawTxtY: TextView? = null
+    private var calMagRawTxtZ: TextView? = null
+    private var gyroRawTxtX: TextView? = null
+    private var gyroRawTxtY: TextView? = null
+    private var gyroRawTxtZ: TextView? = null
+
+    // Log columns
+    private var magLogCol0: TextView? = null
+    private var magLogCol1: TextView? = null
+    private var magLogCol2: TextView? = null
+    private var gyroLogCol0: TextView? = null
+    private var gyroLogCol1: TextView? = null
+    private var gyroLogCol2: TextView? = null
+
+    // Data representation pointers
+    private var calMagByXY: ImageView? = null
+    private var calMagByYZ: ImageView? = null
+    private var calMagByZX: ImageView? = null
+    private var gyroByX: ImageView? = null
+    private var gyroByY: ImageView? = null
+    private var gyroByZ: ImageView? = null
+
+    // Manipulation
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
+    private var updateVals: Switch? = null
+    private var updateStatus = false
+    private var recordValsButt: Button? = null
+    private var resetGyroDisp: Button? = null
+    private var clearLogs: Button? = null
+
+    // System time
+    private var lastSensorUpdateSysTime = System.currentTimeMillis()
+    private var lastGyroChangeTime = System.currentTimeMillis()
+
+    // Constants / Params
+    val LPF_ALPHA = 0.25f // LPF filter Alpha
+    val USE_LPF_FILTER = true
+
+    // Labels
+    val axesLabels = arrayOf("X", "Y", "Z")
+    val vectSumLabels = arrayOf("XY", "YZ", "ZX")
+
+    // Raw sensor data record
+    private var calMagDataRaw = floatArrayOf(0f, 0f, 0f)
+    private var gyroDataRaw = floatArrayOf(0f, 0f, 0f)
+    private var gyroAng = doubleArrayOf(0.0, 0.0, 0.0)
+
+    // Sensor definitions / variables
+    private var sensorManager: SensorManager? = null
+
+    // Sensor processed value records
+    private var calMagRecXY = ArrayList<BigDecimal>()
+    private var calMagRecYZ = ArrayList<BigDecimal>()
+    private var calMagRecZX = ArrayList<BigDecimal>()
+    private var gyroRecX = ArrayList<BigDecimal>()
+    private var gyroRecY = ArrayList<BigDecimal>()
+    private var gyroRecZ = ArrayList<BigDecimal>()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        sensorManager = this.getSystemService(SENSOR_SERVICE) as SensorManager
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setContentView(R.layout.activity_main)
+
+        // Register listeners
+        sensorManager!!.registerListener(this as SensorEventListener,
+                sensorManager!!.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD),
+                SensorManager.SENSOR_DELAY_GAME)
+        sensorManager!!.registerListener(this as SensorEventListener,
+                sensorManager!!.getDefaultSensor(Sensor.TYPE_GYROSCOPE),
+                SensorManager.SENSOR_DELAY_FASTEST)
+        //        sensorManager.registerListener((SensorEventListener) this , sensorManager.getDefaultSensor(Sensor.TYPE_),
+//                SensorManager.SENSOR_DELAY_GAME);
+
+        // Sensor visual processed representation
+        calMagByXY = findViewById<View>(id.calMagByXY) as ImageView
+        calMagByYZ = findViewById<View>(id.calMagByYZ) as ImageView
+        calMagByZX = findViewById<View>(id.calMagByZX) as ImageView
+        gyroByX = findViewById<View>(id.gyroByX) as ImageView
+        gyroByY = findViewById<View>(id.gyroByY) as ImageView
+        gyroByZ = findViewById<View>(id.gyroByZ) as ImageView
+
+        // Sensor direct reading displays
+        calMagRawTxtX = findViewById<View>(id.calMagTxtX) as TextView
+        calMagRawTxtY = findViewById<View>(id.calMagTxtY) as TextView
+        calMagRawTxtZ = findViewById<View>(id.calMagTxtZ) as TextView
+        gyroRawTxtX = findViewById<View>(id.gyroTxtX) as TextView
+        gyroRawTxtY = findViewById<View>(id.gyroTxtY) as TextView
+        gyroRawTxtZ = findViewById<View>(id.gyroTxtZ) as TextView
+
+        // Value recording functionality
+        recordValsButt = findViewById<View>(id.recordButton) as Button
+        recordValsButt!!.setOnClickListener(this)
+        resetGyroDisp = findViewById<View>(id.resetButton) as Button
+        resetGyroDisp!!.setOnClickListener(this)
+        clearLogs = findViewById<View>(id.clearLogs) as Button
+        clearLogs!!.setOnClickListener(this)
+
+        // Logging views
+        magLogCol0 = findViewById<View>(id.magLogCol0) as TextView
+        magLogCol1 = findViewById<View>(id.magLogCol1) as TextView
+        magLogCol2 = findViewById<View>(id.magLogCol2) as TextView
+        gyroLogCol0 = findViewById<View>(id.gyroLogCol0) as TextView
+        gyroLogCol1 = findViewById<View>(id.gyroLogCol1) as TextView
+        gyroLogCol2 = findViewById<View>(id.gyroLogCol2) as TextView
+
+        // Value updating switch
+        updateVals = findViewById<View>(id.updateSwitch) as Switch
+        updateVals!!.isChecked = updateStatus
+        updateVals!!.setOnCheckedChangeListener { buttonView, isChecked -> updateStatus = isChecked }
+
+        // Display records if previously displayed
+        setViewsDisp(vectSumLabels, "°", arrayOf(calMagRecXY, calMagRecYZ, calMagRecZX), arrayOf(magLogCol0, magLogCol1, magLogCol2))
+        setViewsDisp(axesLabels, "°", arrayOf(gyroRecX, gyroRecY, gyroRecZ), arrayOf(gyroLogCol0, gyroLogCol1, gyroLogCol2))
+    }
+
+    override fun onClick(v: View) {
+        // Record current data
+        if (v.id == id.recordButton) {
+            calMagRecXY.add(0, round(Math.toDegrees(Math.atan2(calMagDataRaw[0].toDouble(), calMagDataRaw[1].toDouble())).toFloat(), 2))
+            calMagRecYZ.add(0, round(Math.toDegrees(Math.atan2(calMagDataRaw[1].toDouble(), calMagDataRaw[2].toDouble())).toFloat(), 2))
+            calMagRecZX.add(0, round(Math.toDegrees(Math.atan2(calMagDataRaw[2].toDouble(), calMagDataRaw[0].toDouble())).toFloat(), 2))
+            // Remove extra lines
+            if (calMagRecXY.size > R.integer.maxLinesRec) {
+                calMagRecXY.removeAt(calMagRecXY.size - 1)
+                calMagRecYZ.removeAt(calMagRecYZ.size - 1)
+                calMagRecZX.removeAt(calMagRecZX.size - 1)
+            }
+            gyroRecX.add(0, round(Math.toDegrees(gyroAng[0]).toFloat(), 2))
+            gyroRecY.add(0, round(Math.toDegrees(gyroAng[1]).toFloat(), 2))
+            gyroRecZ.add(0, round(Math.toDegrees(gyroAng[2]).toFloat(), 2))
+            // Remove extra lines
+            if (gyroRecX.size > R.integer.maxLinesRec) {
+                gyroRecX.removeAt(calMagRecXY.size - 1)
+                gyroRecY.removeAt(calMagRecYZ.size - 1)
+                gyroRecZ.removeAt(calMagRecZX.size - 1)
+            }
+            // Display data
+            setViewsDisp(vectSumLabels, "°", arrayOf(calMagRecXY, calMagRecYZ, calMagRecZX), arrayOf(magLogCol0, magLogCol1, magLogCol2))
+            setViewsDisp(axesLabels, "°", arrayOf(gyroRecX, gyroRecY, gyroRecZ), arrayOf(gyroLogCol0, gyroLogCol1, gyroLogCol2))
+        } else if (v.id == id.resetButton) {
+            gyroAng = doubleArrayOf(0.0, 0.0, 0.0)
+        } else if (v.id == id.clearLogs) {
+            clearRecLogs()
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    override fun onSensorChanged(event: SensorEvent) {
+        if (updateVals!!.isChecked) {
+            if (event.sensor.type == Sensor.TYPE_GYROSCOPE) {
+                val tDiff = System.currentTimeMillis() - lastGyroChangeTime
+                lastGyroChangeTime = System.currentTimeMillis()
+                gyroDataRaw = lowPass(event.values.clone(), gyroDataRaw)
+                gyroAng[0] += tDiff / 1000.0 * gyroDataRaw[0]
+                gyroAng[1] += tDiff / 1000.0 * gyroDataRaw[1]
+                gyroAng[2] += tDiff / 1000.0 * gyroDataRaw[2]
+                gyroDataRaw = event.values.clone()
+            }
+            if (event.sensor.type == Sensor.TYPE_MAGNETIC_FIELD) {
+                calMagDataRaw = if (USE_LPF_FILTER) lowPass(event.values.clone(), calMagDataRaw) else event.values.clone()
+            }
+            lastSensorUpdateSysTime = System.currentTimeMillis()
+        }
+        // Set display for calibrated magnetometer
+        setViewsDisp(axesLabels, "μT", round(calMagDataRaw, 4), arrayOf(calMagRawTxtX, calMagRawTxtY, calMagRawTxtZ))
+        setViewsDisp(axesLabels, "rad/s", round(gyroDataRaw, 4), arrayOf(gyroRawTxtX, gyroRawTxtY, gyroRawTxtZ))
+        calMagByXY!!.rotation = Math.toDegrees(Math.atan2(calMagDataRaw[0].toDouble(), calMagDataRaw[1].toDouble())).toFloat()
+        calMagByYZ!!.rotation = Math.toDegrees(Math.atan2(calMagDataRaw[1].toDouble(), calMagDataRaw[2].toDouble())).toFloat()
+        calMagByZX!!.rotation = Math.toDegrees(Math.atan2(calMagDataRaw[2].toDouble(), calMagDataRaw[0].toDouble())).toFloat()
+        gyroByX!!.rotation = Math.toDegrees(gyroAng[0]).toFloat()
+        gyroByY!!.rotation = Math.toDegrees(gyroAng[1]).toFloat()
+        gyroByZ!!.rotation = Math.toDegrees(gyroAng[2]).toFloat()
+    }
+
+    override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {
+        // Unused
+    }
+
+    override fun onPause() {
+        super.onPause()
+        sensorManager!!.unregisterListener(this as SensorEventListener)
+    }
+
+    fun setViewsDisp(labels: Array<String>, unit: String, values: Array<ArrayList<BigDecimal>>, columns: Array<TextView?>) {
+        if (!(labels.size == values.size && values.size == columns.size)) Log.d("ERROR", "Set display failed, lists' length do not match")
+        for (i in values.indices) {
+            var dispStr = ""
+            for (data in values[i]) {
+                dispStr += "${labels[i]}: ${addPlusSign(data)}$unit\n"
+            }
+            columns[i]?.text = dispStr
+        }
+    }
+
+    fun setViewsDisp(labels: Array<String>, unit: String, values: Array<BigDecimal?>, columns: Array<TextView?>) {
+        if (!(labels.size == values.size && values.size == columns.size)) Log.d("ERROR", "Set display failed, lists' length do not match")
+        for (i in values.indices) {
+            columns[i]!!.text = "${labels[i]}: ${addPlusSign(values[i])}$unit\n"
+        }
+    }
+
+    fun lowPass(input: FloatArray, output: FloatArray?): FloatArray {
+        if (output == null) return input
+        for (i in input.indices) {
+            output[i] = output[i] + LPF_ALPHA * (input[i] - output[i])
+        }
+        return output
+    }
+
+    fun addPlusSign(num: BigDecimal?): String {
+        return if (num!!.compareTo(BigDecimal(0)) != -1) {
+            "+$num"
+        } else "" + num
+    }
+
+    fun clearRecLogs() {
+        calMagRecXY.clear()
+        calMagRecYZ.clear()
+        calMagRecZX.clear()
+        gyroRecX.clear()
+        gyroRecY.clear()
+        gyroRecZ.clear()
+        // Clear display
+        setViewsDisp(vectSumLabels, "°", arrayOf(calMagRecXY, calMagRecYZ, calMagRecZX), arrayOf(magLogCol0, magLogCol1, magLogCol2))
+        setViewsDisp(axesLabels, "°", arrayOf(gyroRecX, gyroRecY, gyroRecZ), arrayOf(gyroLogCol0, gyroLogCol1, gyroLogCol2))
+    }
+
+    companion object {
+        fun round(d: FloatArray, decimalPlace: Int): Array<BigDecimal?> {
+            val bdarr = arrayOfNulls<BigDecimal>(d.size)
+            for (i in d.indices) {
+                val bd = BigDecimal(d[i].toString() + "")
+                bdarr[i] = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP)
+            }
+            return bdarr
+        }
+
+        fun round(d: Float, decimalPlace: Int): BigDecimal {
+            var bd = BigDecimal(d.toString() + "")
+            bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP)
+            return bd
+        }
+    }
+}
