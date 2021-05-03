@@ -1,5 +1,7 @@
 # Orientation Info
 
+[![Build Status](http://ci.jector.io/buildStatus/icon?job=orientationInfo)](http://ci.jector.io/job/orientationInfo/)
+
 ---
 
 This app started out as a testing ground for FTC robotics, particularly concerning orientation. It allows for a clear representation of usable processed data from different phone sensors (i.e. 9 axes IMUs)
