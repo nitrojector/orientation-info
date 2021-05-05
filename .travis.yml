@@ -18,8 +18,5 @@ android:
     - platform-tools
     - build-tools-$ANDROID_BUILD_TOOLS_VERSION
     - android-$ANDROID_API_LEVEL
-before_script:
-    - mkdir -p "$ANDROID_HOME/licenses"
-    - cp ./google-licenses/* "$ANDROID_HOME/licenses/"
 script:
     - ./gradlew build check
