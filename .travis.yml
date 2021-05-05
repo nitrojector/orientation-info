@@ -9,6 +9,10 @@ android:
     - 'android-sdk-preview-license-.+'
     - 'android-sdk-license-.+'
     - 'google-gdk-license-.+'
+    - 'android-sdk-arm-dbt-license-.+'
+    - 'android-googletv-license-.+'
+    - 'intel-android-extra-license-.+'
+    - 'mips-android-sysimage-license-.+'
  components:
     - tools
     - platform-tools
